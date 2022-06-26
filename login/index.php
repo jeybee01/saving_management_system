@@ -1,31 +1,27 @@
 <?php
 session_start();
 include '../connect.php';
+include '../function.php';
 
-
-$email = $_POST['email'];
-$password = $_POST['pass'];
-
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
+if (isset($_POST['login'])) {
+	$email = clean($_POST['email']);
+$password = clean($_POST['password']);
 	$sql = "SELECT * FROM admin WHERE email= '$email' AND password = '$password'";
-
 	$result = $conn->query($sql);
-
 	if ($result->num_rows > 0){
-$_SESSION['success'] = "<center>Login Succesfully!</center>";
-	  while($row = $result->fetch_assoc()) {
+		$row = $result->fetch_assoc();
+		$_SESSION['adminId']=$row['id'];
+		$_SESSION['adminEmail'] = $row['email'];
+	  	$_SESSION['adminPassword']= $row['password'];
         header('Location: ../home.php');
         exit();
-	} 
+
 }
 	else {
+		$_SESSION['error']="Wrong Email or Password";
          header('Location: ../index.php');
-        exit();
 }
 }
-else{
-	echo "error some where!!!";
-}
+
 
 ?>

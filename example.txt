@@ -1,0 +1,306 @@
+//html
+
+<!DOCTYPE html>
+
+<html>
+
+   
+
+<head>
+
+    <title>Image Upload</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+</head>
+
+   
+
+<body>
+
+    <div id="content">
+
+        <form method="POST" action="" enctype="multipart/form-data">
+
+            <div class="form-group">
+
+                <input class="form-control" type="file" name="uploadfile" value="" />
+
+            </div>
+
+            <div class="form-group">
+
+                <button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div id="display-image">
+
+    <?php
+
+        $query = " select * from image ";
+
+        $result = mysqli_query($db, $query);
+ 
+
+        while ($data = mysqli_fetch_assoc($result)) {
+
+    ?>
+
+        <img src="./image/<?php echo $data['filename']; ?>">
+ 
+
+    <?php
+
+        }
+
+    ?>
+
+    </div>
+
+</body>
+ 
+
+</html>
+
+
+
+#css
+
+*{
+
+    margin: 0; 
+
+      padding: 0; 
+
+      box-sizing: border-box;
+}
+ 
+#content{
+
+    width: 50%;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: 20px auto;
+
+    border: 1px solid #cbcbcb;
+}
+form{
+
+    width: 50%;
+
+    margin: 20px auto;
+}
+ 
+#display-image{
+
+    width: 100%;
+
+    justify-content: center;
+
+    padding: 5px;
+
+    margin: 15px;
+}
+img{
+
+    margin: 5px;
+
+    width: 350px;
+
+    height: 250px;
+}
+ 
+
+You can copy the above code and mention it into the main code directly or create a link as same in the HTML code and attach it with the main code which is given below. As mentioned that if you link the stylesheet file you should create another file in .css format and save it in the place where the main file is to be saved. The form created with the help of the POST method and the enctype=”multipart/form-data” is the action which encodes the files and allows you to send them through POST.
+Now we are working on the PHP code for the transfer of the image from any folder of the system in a particular folder which you are mentioning and storing it into the database as a directory.
+ 
+
+PHP code: The PHP code is for the uploading images, the file name is saved with the index.php, you can also save it with another name as you prefer. 
+ 
+<?php
+
+error_reporting(0);
+ 
+
+$msg = "";
+ 
+// If upload button is clicked ...
+
+if (isset($_POST['upload'])) {
+ 
+
+    $filename = $_FILES["uploadfile"]["name"];
+
+    $tempname = $_FILES["uploadfile"]["tmp_name"];
+
+    $folder = "./image/" . $filename;
+ 
+
+    $db = mysqli_connect("localhost", "root", "", "geeksforgeeks");
+ 
+
+    // Get all the submitted data from the form
+
+    $sql = "INSERT INTO image (filename) VALUES ('$filename')";
+ 
+
+    // Execute query
+
+    mysqli_query($db, $sql);
+ 
+
+    // Now let's move the uploaded image into the folder: image
+
+    if (move_uploaded_file($tempname, $folder)) {
+
+        echo "<h3>  Image uploaded successfully!</h3>";
+
+    } else {
+
+        echo "<h3>  Failed to upload image!</h3>";
+
+    }
+}
+?>
+
+
+#php
+
+
+<?php
+
+error_reporting(0);
+ 
+
+$msg = "";
+ 
+// If upload button is clicked ...
+
+if (isset($_POST['upload'])) {
+ 
+
+    $filename = $_FILES["uploadfile"]["name"];
+
+    $tempname = $_FILES["uploadfile"]["tmp_name"];
+
+    $folder = "./image/" . $filename;
+ 
+
+    $db = mysqli_connect("localhost", "root", "", "geeksforgeeks");
+ 
+
+    // Get all the submitted data from the form
+
+    $sql = "INSERT INTO image (filename) VALUES ('$filename')";
+ 
+
+    // Execute query
+
+    mysqli_query($db, $sql);
+ 
+
+    // Now let's move the uploaded image into the folder: image
+
+    if (move_uploaded_file($tempname, $folder)) {
+
+        echo "<h3>  Image uploaded successfully!</h3>";
+
+    } else {
+
+        echo "<h3>  Failed to upload image!</h3>";
+
+    }
+}
+?>
+ 
+<!DOCTYPE html>
+<html>
+ 
+<head>
+
+    <title>Image Upload</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+ 
+<body>
+
+    <div id="content">
+
+        <form method="POST" action="" enctype="multipart/form-data">
+
+            <div class="form-group">
+
+                <input class="form-control" type="file" name="uploadfile" value="" />
+
+            </div>
+
+            <div class="form-group">
+
+                <button class="btn btn-primary" type="submit" name="upload">UPLOAD</button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div id="display-image">
+
+        <?php
+
+        $query = " select * from image ";
+
+        $result = mysqli_query($db, $query);
+ 
+
+        while ($data = mysqli_fetch_assoc($result)) {
+
+        ?>
+
+            <img src="./image/<?php echo $data['filename']; ?>">
+ 
+
+        <?php
+
+        }
+
+        ?>
+
+    </div>
+</body>
+ 
+</html>
+
+
+
+We are first selecting the records from the table in the $query variable.
+Then the $result will execute the query.
+While loop is used to fetch all the records in the $data to fetch the image from the database.
+And finally, the fetched images are displayed with the help of the <img> tag. In the <img> tag we are passing the location of the file uploaded on the server and the name of the image file in our database.
+CSS code: The style.css is the file that styles the form into a new design and the code is given below. 
+
+
+Explanation: The following are the explanation to create the PHP code which is the following: 
+
+The error_reporting(0) is for getting 0 error while PHP code is running.
+$_files work behind the scene. It is being used to upload files via the HTTP POST method and hold the attributes of files.
+$filename is a name used to uniquely identify a computer file stored in a file system.
+$tempname is used to copy the original name of the file which is uploaded to the database as the temp name where the image is stored after upload.
+$folder defines the path of the uploaded image into the database to the folder where you want to be stored. The “./image/” is the folder name where the image is to be saved after the upload. And the $filename is used for fetching or uploading the file.
+$db, the basic line for any of the PHP code for connecting to the database.
+$sql is used for inserting the image into the database of the table name image to the variable filename.
+mysqli_query is the function to execute a query of $db and $sql.
+Now, let’s move the uploaded image into the folder named the image. The image named folder is saved into the WAMP or XAMPP server folder which is in C drive into the www folder.

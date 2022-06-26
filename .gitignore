@@ -1,2 +1,7 @@
-js
-files
+assets/
+files/
+bootstrap/
+datatable/
+jquery/
+css/
+stylesheet/

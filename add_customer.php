@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['jb'])) {
+	header('Location:index.php');
+	exit();
+}else
+{
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,14 +30,12 @@
 		<input type="radio" name="gender" value="female"> Female<br>
 		<input type="radio" name="gender" value="other"> Other
 		<input type="text" name="phone" placeholder="Phone" required="">
-		<div class="form-group">
-		<label for="photo">Upload Passport</label>
-		<input type="file" name="photo" class="file_upload"  onClick="imageDown();" onChange="readURL(this,'img_prev_Photo');" required />
+		<div class="form-group" >
+		<!-- <label for="photo">Upload Passport</label> -->
+		<img id="profileDisplay" src="files/avatar.jpg" alt="Select an image"  onclick="triggerClick()" border="0" style="height:160px; width:120px;">
+
+		<input type="file" name="photo" class="file_upload" id="profileImage" onClick="imageDown();" onChange="displayImage(this);" style="display: none;" />
 		</div>
-		<div id="imgDisplayPhoto" align='center' style="border:1px solid red; height:160px; width:120px;">
-		<img id="img_prev_Photo" alt="select an image" border="0" style="height:160px; width:120px;">
-		</div>
-		<!-- <div id="preview"></div> -->
 		<input type="submit" name="submit" value="ADD CUSTOMER">
 	</form>
 </div>
@@ -40,3 +46,6 @@
 
 </body>
 </html>
+<?php
+}
+?>
